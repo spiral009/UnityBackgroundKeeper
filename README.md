@@ -28,15 +28,6 @@ KernelSU mount, no root-partition changes.**
 
 Press Home in a world → VRChat floats in a PiP window.
 
-> **Why no system app?** LSPosed injects into `system_server` at boot and reads the
-> module APK from `/data/app` (device-encrypted, readable before user unlock) — so a
-> normal install hooks `system_server` fine, exactly like other framework-scoped
-> modules. (Earlier versions of this README wrongly claimed a system-app install was
-> required and walked through `adb remount` / `hybrid_mount` OverlayFS; that was a
-> misdiagnosis. For the record, swapping a KernelSU device's metamodule to OverlayFS
-> `hybrid_mount` **bootlooped** when an `adb remount` overlay was already present —
-> another reason to just use the normal install above.)
-
 ## Recommended scope
 
 | Scope | Keep-alive | PiP |
