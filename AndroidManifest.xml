@@ -14,7 +14,7 @@
         <!-- Xposed / LSPosed module metadata -->
         <meta-data android:name="xposedmodule" android:value="true" />
         <meta-data android:name="xposeddescription"
-            android:value="Keeps Unity games (e.g. VRChat) running in the background (no freeze/disconnect). As a system app it also forces VRChat into a floating Picture-in-Picture window on Home. Scope: the game(s); add System Framework for PiP." />
+            android:value="Keeps Unity games (e.g. VRChat) running in the background (no freeze/disconnect) and forces VRChat into a floating Picture-in-Picture window on Home. Scope: the game(s); add System Framework for PiP. Reboot after enabling." />
         <meta-data android:name="xposedminversion" android:value="93" />
 
         <activity
