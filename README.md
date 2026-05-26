@@ -63,9 +63,6 @@ Press Home in a world → VRChat floats in a PiP window.
 - **Muting just one app's audio isn't possible** for VRChat — its voice/TV use a
   native AAudio path with no Java handle and no OSC control; only **global Media
   volume** silences it. PiP keeps it audible; turn Media volume down for quiet.
-- **The on-screen touch buttons can't be hidden** — they're Unity-rendered, and
-  VRChat shows them regardless of a connected controller (verified). Burn-in: use
-  lower brightness / your ROM's pixel-shift.
 - It can't render while *truly hidden* (no surface) — that's why PiP (visible) is
   the approach.
 
