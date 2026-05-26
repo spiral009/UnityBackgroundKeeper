@@ -23,20 +23,32 @@ Two features:
 
 ### + Picture-in-Picture (VRChat)
 PiP needs a hook in `system_server`, which only loads if the module's code is
-**readable at early boot** — i.e. installed as a **system app**. A normal `/data`
-install can't do this (it's encrypted-locked when `system_server` starts), and
-KernelSU **magic-mount** is too late (PackageManager has already scanned). You need
-the APK at `/system_ext/app/UnityBackgroundKeeper/` via one of:
+**readable at early boot** — i.e. installed as a **system app** at
+`/system_ext/app/UnityBackgroundKeeper/`. A normal `/data` install can't do this
+(it's encrypted-locked when `system_server` starts), and KernelSU **magic-mount** is
+too late (PackageManager has already scanned). Working ways to get it there:
 
-- **Bake into your ROM** (if you build it) — drop the APK in `system_ext/app/`. Cleanest/permanent.
-- **KernelSU + OverlayFS** (e.g. the `hybrid_mount` module, or KSU's overlayfs mode) —
-  a KSU module that **overlayfs**-mounts the APK to `/system_ext/app/...`. OverlayFS
-  mounts early enough for PackageManager (magic-mount does not).
-- **`adb remount`** (userdebug / verity disabled) — `adb remount`, then copy the APK
-  into `/system_ext/app/UnityBackgroundKeeper/` (context `u:object_r:system_file:s0`), reboot.
+- **Bake into your ROM** (if you build it) — drop the APK in `system_ext/app/`.
+  Cleanest and permanent; survives everything. Recommended if you can.
+- **`adb remount`** (userdebug build / verity disabled) — `adb disable-verity`,
+  reboot, `adb remount`, then copy the APK into
+  `/system_ext/app/UnityBackgroundKeeper/` and `chcon u:object_r:system_file:s0` it,
+  reboot. **This is the method actually verified on the test device** (OnePlus 13,
+  crDroid Android 16, KernelSU Next).
 
-Then: enable the module, scope it to **System Framework + your game**, grant the
-PiP app-op (`appops set com.vrchat.mobile.playstore PICTURE_IN_PICTURE allow`), reboot.
+> **OverlayFS / `hybrid_mount` — tested, did NOT work here.** In theory a KSU
+> OverlayFS metamodule (e.g. `hybrid_mount`) should mount the APK to `/system_ext`
+> early enough for PackageManager, avoiding `adb remount`. In practice, on a device
+> that *already* has an `adb remount` OverlayFS on `/system_ext`, swapping the KSU
+> metamodule from magic-mount to `hybrid_mount` (OverlayFS) **bootlooped** — two
+> OverlayFS layers over the same partitions conflict. Switching the global mount
+> backend also affects every other module, so it's risky. If you go this route,
+> remove the adb-remount overlay first (re-enable dm-verity) and expect to recover
+> from a bootloop. Not recommended unless you know what you're doing.
+
+After the APK is a system app: enable the module, scope it to **System Framework +
+your game**, grant the PiP app-op
+(`appops set com.vrchat.mobile.playstore PICTURE_IN_PICTURE allow`), reboot.
 Press Home in a world → VRChat floats in a PiP window.
 
 ## Recommended scope
