@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.unitybgkeeper"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="36" />
+
+    <application
+        android:label="Unity Background Keeper"
+        android:icon="@android:drawable/ic_media_play"
+        android:theme="@android:style/Theme.DeviceDefault.DayNight">
+
+        <!-- Xposed / LSPosed module metadata -->
+        <meta-data android:name="xposedmodule" android:value="true" />
+        <meta-data android:name="xposeddescription"
+            android:value="Keeps Unity games (e.g. VRChat) running in the background (no freeze/disconnect). As a system app it also forces VRChat into a floating Picture-in-Picture window on Home. Scope: the game(s); add System Framework for PiP." />
+        <meta-data android:name="xposedminversion" android:value="93" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="Unity Background Keeper">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

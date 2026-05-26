@@ -1,0 +1,6 @@
+build/
+*.keystore
+*.idsig
+.gradle/
+.idea/
+local.properties
